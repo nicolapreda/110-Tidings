@@ -52,7 +52,7 @@ Altri comandi disponibili sono:
 
 ### Prerequisites
 
-E' necessario installare Python e Pipin locale per poter avviare il bot tramite console.
+E' necessario installare Python e Pip in locale per poter avviare il bot tramite console.
 
 Le seguenti librerie sono richieste per il corretto funzionamento dello script:
 
@@ -78,7 +78,7 @@ diskxo@main:~/110-tidings $ touch token.json
 
 ## 🚀 Deploying your own bot <a name = "deployment"></a>
 
-Per lanciare il bot ti basterà spostarti sulla repository clonata e lanciare il comando:
+Per lanciare il bot spostati sulla repository clonata e scrivi il comando:
 ```console
 diskxo@main:~/110-tidings $ python app.py
 ```
