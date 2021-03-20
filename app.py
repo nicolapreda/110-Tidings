@@ -30,7 +30,7 @@ def main(message):
             googlenews.get_page(n)
             
         data = googlenews.get_links()   # Get links of news
-            
+        print(data)            
         read_newslink = json.loads(open("news.json").read()) # Get the token in "token.json"
 
         for e in data:  # Scan "data" links array 
