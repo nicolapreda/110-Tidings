@@ -25,28 +25,32 @@ def main(message):
             
         googlenews = GoogleNews(lang='it')
         googlenews.search('Bonus casa 110')
-        pages_range = range(10)
+        pages_range = range(2)
         for n in pages_range:
             googlenews.get_page(n)
-            
+
         data = googlenews.get_links()   # Get links of news
-        print(data)            
-        read_newslink = json.loads(open("news.json").read()) # Get the token in "token.json"
+                    
+        read_newslink = json.loads(open("news.json").read()) # Get sent links in "news.json"
+        
+        json_news = {}
+        json_news['links'] = []
 
         for e in data:  # Scan "data" links array 
-            if e in read_newslink:
+            if e in read_newslink["links"][e]:
                 pass                    
             else:
                 print("⚠️ 🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))     # Send messages
                 bot.send_message(chatid, "⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))
-                json_name = 'news.json' 
-                    
-                def WritetoJSONFile(path, json_name, data):  # Access JSON
-                    filePathNameWExt = './' + json_name
-                    with open(filePathNameWExt, 'w') as fp:
-                        json.dump(data, fp)
+                
+                json_news["links"].append({
+                    e : e
+                })
+                
+                with open("news.json", 'w') as outfile:
+                    json.dump(json_news, outfile)    
+            
 
-                WritetoJSONFile('./',json_name, data)   # Update news.json
                     
         print("--- ⚠️ Finito controllo in data: " + current_time)    # Print scan refresh
         time.sleep(60)    
