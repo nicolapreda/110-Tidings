@@ -37,8 +37,9 @@ def main(message):
         json_news['links'] = []
 
         for e in data:  # Scan "data" links array 
-            if e in read_newslink["links"][e]:
-                pass                    
+            print(e)
+            if e in read_newslink:
+                print("shash")                    
             else:
                 print("⚠️ 🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))     # Send messages
                 bot.send_message(chatid, "⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))
