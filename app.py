@@ -46,7 +46,7 @@ def main(message):
                 
             with open("news.json", "r", encoding='utf-8')as newsreader:
                 for title in datatitle:
-                    if title in read_newslink:
+                    if title or e in read_newslink:
                         print()                    
                     else:
                         print("⚠️ 🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))     # Send messages
