@@ -25,36 +25,37 @@ def main(message):
             
         googlenews = GoogleNews(lang='it')
         googlenews.search('Bonus casa 110')
-        pages_range = range(2)
+        pages_range = range(5)
         for n in pages_range:
             googlenews.get_page(n)
 
         data = googlenews.get_links()   # Get links of news
-                    
-        read_newslink = json.loads(open("news.json").read()) # Get sent links in "news.json"
-        
+        datatitle = googlenews.get_texts()
+        read_newslink = json.loads(open("news.json").read()) # Get sent links in "news.json"        
         json_news = {}
-        json_news['links'] = []
 
+                
         for e in data:  # Scan "data" links array 
-            print(e)
-            if e in read_newslink:
-                print("shash")                    
-            else:
-                print("⚠️ 🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))     # Send messages
-                bot.send_message(chatid, "⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))
+            def write_to_news():
+                for title in datatitle:    
+                    json_news[title] = {e : e}
+                        
+                with open("news.json", 'w', encoding='utf-8') as outfile:
+                    json.dump(json_news, outfile)
+                        
                 
-                json_news["links"].append({
-                    e : e
-                })
-                
-                with open("news.json", 'w') as outfile:
-                    json.dump(json_news, outfile)    
-            
+            with open("news.json", "r", encoding='utf-8')as newsreader:
+                for title in datatitle:
+                    if title in read_newslink:
+                        print()                    
+                    else:
+                        print("⚠️ 🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))     # Send messages
+                        bot.send_message(chatid, "⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))
+                        write_to_news()
 
-                    
+            
         print("--- ⚠️ Finito controllo in data: " + current_time)    # Print scan refresh
-        time.sleep(60)    
+        time.sleep(600)    
 
 
 @bot.message_handler(commands=['help']) # Help command
