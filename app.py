@@ -16,7 +16,6 @@ def main(message):
     print("🆕 L'id utente: " + str(chatid) + " ha appena avviato il bot!")
     bot.reply_to(message, "Benvenuto nel bot Telegram dedicato al bonus Casa 110%! 🏠🎉\nQui riceverai tutti gli aggiornamenti in tempo reale sul Bonus. 📰\nUsa /help per maggiori informazioni sul bot. 🙋")
     
-
     while True:
         now = datetime.now()    
         current_time = now.strftime("%H:%M:%S")  # Get time  
@@ -24,43 +23,44 @@ def main(message):
         print("--- ⚠️ Controllo nuove notizie alle ore: " + current_time)  # Print new scan
             
         googlenews = GoogleNews(lang='it')
-        googlenews.search('Bonus casa 110')
-        pages_range = range(5)
+        googlenews.search('Bonus 110')
+        pages_range = range(7)
         for n in pages_range:
             googlenews.get_page(n)
 
-        data = googlenews.get_links()   # Get links of news
-        datatitle = googlenews.get_texts()
+        links = googlenews.get_links()   # Get links of news
+        
         read_newslink = json.loads(open("news.json").read()) # Get sent links in "news.json"        
+        
+
+        def WritetoJSONFile(path, filename, data):  # Access JSON
+            filePathNameWExt = './' + filename
+            with open(filePathNameWExt, 'w') as fp:
+                json.dump(data, fp)
+        
         json_news = {}
-
+        
+        for e in links:  # Scan "data" links array 
+            data = json.loads(open("news.json").read())    
+            json_news[e] = e
                 
-        for e in data:  # Scan "data" links array 
-            def write_to_news():
-                for title in datatitle:    
-                    json_news[title] = {e : e}
-                        
-                with open("news.json", 'w', encoding='utf-8') as outfile:
-                    json.dump(json_news, outfile)
-                        
-                
-            with open("news.json", "r", encoding='utf-8')as newsreader:
-                for title in datatitle:
-                    if title or e in read_newslink:
-                        print()                    
-                    else:
-                        print("⚠️ 🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))     # Send messages
-                        bot.send_message(chatid, "⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))
-                        write_to_news()
-
+            if e in data:            
+                pass
+            else:
+                print("⚠️ 🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))     # Send messages
+                bot.send_message(chatid, "⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))
+                WritetoJSONFile('./',"news.json", json_news)
+                    
             
+
+
         print("--- ⚠️ Finito controllo in data: " + current_time)    # Print scan refresh
         time.sleep(600)    
-
 
 @bot.message_handler(commands=['help']) # Help command
 def main(message):
     bot.reply_to(message, "❓️ Cosa può fare questo bot?\n➡️ Inoltra gli ultimi annunci e le ultime notizie riguardanti il Superbonus Casa 110%\n❓️ Come posso fermare l'invio delle notizie?\n➡️ Ti basta arrestare e bloccare il bot cliccando sul menù in alto a destra\n❓️ Chi è lo sviluppatore del bot?\n➡️ https://t.me/diskxo ")
+
 
 print("Bot Online! 🚀🏠")
 bot.polling()
