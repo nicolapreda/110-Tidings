@@ -10,6 +10,12 @@ from datetime import datetime   # Get current time
 token = json.loads(open("token.json").read()) # Get the token in "token.json"
 bot = telebot.TeleBot(token['token']) # Load bot with token
 
+@bot.message_handler(commands=['help']) # Help command
+def main(message):
+    bot.reply_to(message, "❓️ Cosa può fare questo bot?\n➡️ Inoltra gli ultimi annunci e le ultime notizie riguardanti il Superbonus Casa 110%\n❓️ Come posso fermare l'invio delle notizie?\n➡️ Ti basta arrestare e bloccare il bot cliccando sul menù in alto a destra\n❓️ Chi è lo sviluppatore del bot?\n➡️ https://t.me/diskxo ")
+
+
+
 @bot.message_handler(commands=['start']) # Start command
 def main(message):
     chatid = message.chat.id
@@ -29,37 +35,27 @@ def main(message):
             googlenews.get_page(n)
 
         links = googlenews.get_links()   # Get links of news
+        var_lettura = open("newsdb.txt", "r").read()
+        array = var_lettura.split('\n')
         
-        read_newslink = json.loads(open("news.json").read()) # Get sent links in "news.json"        
-        
-
-        def WritetoJSONFile(path, filename, data):  # Access JSON
-            filePathNameWExt = './' + filename
-            with open(filePathNameWExt, 'w') as fp:
-                json.dump(data, fp)
-        
-        json_news = {}
-        
-        for e in links:  # Scan "data" links array 
-            data = json.loads(open("news.json").read())    
-            json_news[e] = e
-                
-            if e in data:            
+        for link in links:
+            var_lettura = open("newsdb.txt", "r").read()
+            array = var_lettura.split('\n')
+                            
+            if link in array:
                 pass
+                
             else:
-                print("⚠️ 🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))     # Send messages
-                bot.send_message(chatid, "⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + str(e))
-                WritetoJSONFile('./',"news.json", json_news)
-                    
+                print("⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + link) 
+                bot.send_message(chatid, "⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + link)
+                
+                var_scrittura = open("newsdb.txt", "a")
+                var_scrittura.write(link + '\n')
+                var_scrittura.close()
             
-
-
+                
         print("--- ⚠️ Finito controllo in data: " + current_time)    # Print scan refresh
-        time.sleep(600)    
-
-@bot.message_handler(commands=['help']) # Help command
-def main(message):
-    bot.reply_to(message, "❓️ Cosa può fare questo bot?\n➡️ Inoltra gli ultimi annunci e le ultime notizie riguardanti il Superbonus Casa 110%\n❓️ Come posso fermare l'invio delle notizie?\n➡️ Ti basta arrestare e bloccare il bot cliccando sul menù in alto a destra\n❓️ Chi è lo sviluppatore del bot?\n➡️ https://t.me/diskxo ")
+        time.sleep(10)    
 
 
 print("Bot Online! 🚀🏠")
