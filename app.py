@@ -30,7 +30,7 @@ def main(message):
             
         googlenews = GoogleNews(lang='it')
         googlenews.search('Bonus 110')
-        pages_range = range(7)
+        pages_range = range(3)
         for n in pages_range:
             googlenews.get_page(n)
 
@@ -47,7 +47,7 @@ def main(message):
                 
             else:
                 print("⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + link) 
-                bot.send_message(chatid, "⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + link)
+                bot.send_message(chatid,"⚠️🏠Nuova notizia sul Superbonus Casa 110%!\n" + link, disable_notification=True)
                 
                 var_scrittura = open("newsdb.txt", "a")
                 var_scrittura.write(link + '\n')
@@ -55,7 +55,7 @@ def main(message):
             
                 
         print("--- ⚠️ Finito controllo in data: " + current_time)    # Print scan refresh
-        time.sleep(10)    
+        time.sleep(600)    
 
 
 print("Bot Online! 🚀🏠")
