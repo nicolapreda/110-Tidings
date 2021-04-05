@@ -29,7 +29,7 @@ def main(message):
         print("--- ⚠️ Controllo nuove notizie alle ore: " + current_time)  # Print new scan
             
         googlenews = GoogleNews(lang='it')
-        googlenews.search('Bonus 110')
+        googlenews.search('Superbonus casa 110')
         pages_range = range(3)
         for n in pages_range:
             googlenews.get_page(n)
